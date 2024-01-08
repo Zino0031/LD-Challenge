@@ -18,6 +18,7 @@ const columns = [
   { id: 'special_attack', label: 'Special_attack', minWidth: 100 },
   { id: 'special_defense', label: 'Special_defense', minWidth: 100 },
   { id: 'speed', label: 'Speed', minWidth: 100 },
+  { id: 'power', label: 'Power', minWidth: 100 },
   
 ];
 
@@ -52,22 +53,32 @@ const PokemonTable = ({ data }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => (
-                <TableRow key={row.id} hover role="checkbox" tabIndex={-1}>
-                  {columns.map((column) => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell key={column.id} align="center"> 
-                        {column.format && typeof value === 'number'
-                          ? column.format(value)
-                          : value}
-                      </TableCell>
-                    );  
-                  })}
-                </TableRow>
-              ))}
+          {data
+  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+  .map((row) => {
+    const power =
+      row.hp +
+      row.attack +
+      row.defense +
+      row.special_attack +
+      row.special_defense +
+      row.speed;
+
+    return (
+      <TableRow key={row.id} hover role="checkbox" tabIndex={-1}>
+        {columns.map((column) => {
+          const value = column.id === 'power' ? power : row[column.id];
+          return (
+            <TableCell key={column.id} align="center"> 
+              {column.format && typeof value === 'number'
+                ? column.format(value)
+                : value}
+            </TableCell>
+          );  
+        })}
+      </TableRow>
+    );
+  })}
           </TableBody>
         </Table>
       </TableContainer>
