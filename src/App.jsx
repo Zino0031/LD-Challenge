@@ -1,9 +1,9 @@
-import Tablecon from "./containers/Tablecon"
+import Cont from "./containers/Cont"
 
 function App() {
   return <>
   <div className="mx-20">
-  <Tablecon />
+  <Cont />
   </div>
   </>;
 }
