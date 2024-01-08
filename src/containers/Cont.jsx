@@ -3,22 +3,26 @@ import axios from 'axios';
 import PokemonTable from '../components/PokemonTable';
 import Name from '../components/Name';
 import Threshold from '../components/Threshold';
-
+import loadingGif from '../assets/load.gif';
 const Cont = () => {
     const [pokemonData, setPokemonData] = useState([]);
     const [minPower, setMinPower] = useState(0);
     const [maxPower, setMaxPower] = useState(0);
     const [searchName, setSearchName] = useState('');
     const [searchThreshold, setSearchThreshold] = useState('');
-    
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
                 const response = await axios.get('/pokemon.json');
                 setPokemonData(response.data);
+                setIsLoading(false); 
             } catch (error) {
                 console.error('Error fetching data:', error);
+                setIsLoading(false); 
             }
         };
 
@@ -88,6 +92,12 @@ const Cont = () => {
 
     return (
         <div>
+             {isLoading ? ( 
+                <div className="flex justify-center items-center h-screen">
+                    <img src={loadingGif} alt="Loading..." />
+                </div>
+            ) : (
+                <div>
             <div className='flex flex-col  shadow-lg mt-10 border border-gray-100 rounded-lg'>
             <div className='md:flex gap-5 justify-center items-center m-5'>
             <div className="flex-1 w-1/2 m-1">
@@ -106,6 +116,8 @@ const Cont = () => {
                 Pokemon
             </h1>
             <PokemonTable data={filteredData} />
+        </div>
+            )}
         </div>
     );
 };
